@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Star Airways | Official Site</title>
+    <style>
+        :root {
+            --star-navy: #050a14;
+            --star-gold: #d4af37;
+            --deep-space: #0a192f;
+            --smoke: #f4f7f9;
+            --white: #ffffff;
+            --emergency-red: #d93025;
+            --success: #28a745;
+            --star-black: #000000;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: var(--smoke); color: #333; overflow-x: hidden; }
+
+        /* --- PROFESSIONAL ASSET STYLING --- */
+        .star-logo-svg { width: 45px; height: 45px; fill: var(--star-gold); transition: 0.3s; }
+        .logo-container:hover .star-logo-svg { fill: var(--white); }
+
+        /* --- GLOBAL HEADER & NAVIGATION --- */
+        header { background: var(--star-navy); position: sticky; top: 0; z-index: 1000; border-bottom: 3px solid var(--star-gold); }
+        .utility-nav { background: rgba(255,255,255,0.05); padding: 5px 8%; display: flex; justify-content: flex-end; gap: 20px; font-size: 0.7rem; color: #bbb; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .utility-nav a { color: inherit; text-decoration: none; }
+
+        nav { padding: 15px 8%; display: flex; justify-content: space-between; align-items: center; }
+        .logo-container { display: flex; align-items: center; gap: 15px; text-decoration: none; }
+        .logo-text { color: var(--star-gold); font-size: 1.6rem; font-weight: 900; letter-spacing: 2px; }
+        
+        .nav-links { display: flex; gap: 30px; }
+        .nav-links a { color: white; text-decoration: none; font-weight: 600; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; }
+        .nav-links a:hover { color: var(--star-gold); }
+
+        /* --- TRAVEL ADVISORY --- */
+        .advisory { background: var(--emergency-red); color: white; text-align: center; padding: 10px; font-size: 0.8rem; font-weight: bold; }
+
+        /* --- HERO & BOOKING SUITE --- */
+        .hero { height: 450px; background: linear-gradient(rgba(5,10,20,0.6), rgba(5,10,20,0.3)), url('https://images.unsplash.com/photo-1544016768-982d1554f0b9?auto=format&fit=crop&w=1600&q=80'); background-size: cover; background-position: center; display: flex; align-items: flex-end; }
+        
+        .booking-container { max-width: 1200px; margin: -100px auto 40px; padding: 0 20px; width: 100%; }
+        .booking-card { background: white; border-radius: 8px; box-shadow: 0 15px 50px rgba(0,0,0,0.15); overflow: hidden; }
+        
+        .booking-tabs { display: flex; background: #f8f8f8; border-bottom: 1px solid #eee; }
+        .tab { padding: 20px 30px; font-weight: bold; font-size: 0.85rem; color: #888; cursor: pointer; }
+        .tab.active { background: white; color: var(--star-navy); border-top: 4px solid var(--star-gold); }
+
+        .booking-content { padding: 35px; }
+        .booking-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
+        .field { display: flex; flex-direction: column; }
+        label { font-size: 0.65rem; font-weight: bold; color: #999; margin-bottom: 8px; text-transform: uppercase; }
+        input, select { padding: 12px; border: 1px solid #ddd; border-radius: 4px; font-size: 1rem; }
+
+        .btn-search { background: var(--star-gold); color: var(--star-navy); border: none; width: 100%; padding: 18px; font-weight: 800; border-radius: 4px; cursor: pointer; margin-top: 25px; transition: 0.3s; }
+        .btn-search:hover { background: #b8962d; }
+
+        /* --- TICKET MODAL OVERLAY --- */
+        #ticketModal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0; top: 0; width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.8);
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .ticket-box {
+            background: white;
+            width: 100%;
+            max-width: 800px;
+            height: 300px;
+            border-radius: 15px;
+            display: flex;
+            overflow: hidden;
+            border-left: 15px solid var(--star-gold);
+            position: relative;
+            box-shadow: 0 0 50px rgba(0,0,0,0.5);
+        }
+        .ticket-main { flex: 2; padding: 30px; border-right: 2px dashed #ddd; position: relative; }
+        .ticket-stub { flex: 1; padding: 30px; background: var(--star-navy); color: white; text-align: center; display: flex; flex-direction: column; justify-content: center; }
+        .ticket-flight-no { font-size: 1.8rem; color: var(--star-gold); font-weight: 900; }
+        .ticket-disclaimer { position: absolute; bottom: 10px; left: 30px; font-size: 0.6rem; color: var(--emergency-red); font-weight: bold; }
+        .close-ticket { position: absolute; top: -40px; right: 0; color: white; cursor: pointer; font-size: 1.5rem; font-weight: bold; }
+
+        /* --- PROMOTIONAL TILES --- */
+        .promo-section { max-width: 1200px; margin: 80px auto; padding: 0 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px; }
+        .promo-card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .promo-card img { width: 100%; height: 200px; object-fit: cover; }
+        .promo-info { padding: 25px; }
+        .promo-info h3 { margin-bottom: 10px; color: var(--star-navy); }
+        .promo-info p { font-size: 0.9rem; color: #666; line-height: 1.6; }
+
+        /* --- STAR HUB DISCOVERY --- */
+        .hub-discovery { background: var(--star-black); color: white; padding: 50px 8%; display: flex; align-items: center; justify-content: space-between; gap: 40px; margin-top: 60px; }
+        .hub-discovery .asset-box { background: white; padding: 20px; border-radius: 15px; }
+        .hub-discovery .star-logo-svg { fill: black; width: 80px; height: 80px; }
+        
+        /* --- FOOTER --- */
+        footer { background: var(--star-navy); color: #888; padding: 80px 8% 40px; }
+        .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 50px; margin-bottom: 60px; }
+        .footer-col h4 { color: white; margin-bottom: 25px; font-size: 0.9rem; text-transform: uppercase; }
+        .footer-col ul { list-style: none; }
+        .footer-col li { margin-bottom: 12px; font-size: 0.85rem; }
+        .legal-footer { border-top: 1px solid #222; padding-top: 30px; display: flex; justify-content: space-between; font-size: 0.7rem; }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="utility-nav">
+        <a href="#">Help</a>
+        <a href="#">Flight Status</a>
+        <a href="#">Check-In</a>
+        <a href="#">English (US)</a>
+    </div>
+    <nav>
+        <a href="#" class="logo-container">
+            <svg class="star-logo-svg" viewBox="0 0 100 100">
+                <path d="M50 5 L61.2 38.8 L95 43.1 L69 64.9 L77.3 95 L50 78.8 L22.7 95 L31 64.9 L5 43.1 L38.8 38.8 Z" />
+            </svg>
+            <div class="logo-text">STAR AIRWAYS</div>
+        </a>
+        <div class="nav-links">
+            <a href="#">Book</a>
+            <a href="#">Explore</a>
+            <a href="#">StarRewards</a>
+            <a href="#">Fleet</a>
+        </div>
+    </nav>
+</header>
+
+<div class="advisory">
+    WARNING: This is just a website for entertainment purposes only - do not enter real personal information.
+</div>
+
+<div id="ticketModal">
+    <div style="position: relative;">
+        <span class="close-ticket" onclick="closeTicket()">× Close & Return</span>
+        <div class="ticket-box">
+            <div class="ticket-main">
+                <div style="display: flex; align-items: center; margin-bottom: 20px;">
+                    <svg style="width:35px; fill:black; margin-right:10px;" viewBox="0 0 100 100"><path d="M50 5 L61.2 38.8 L95 43.1 L69 64.9 L77.3 95 L50 78.8 L22.7 95 L31 64.9 L5 43.1 L38.8 38.8 Z" /></svg>
+                    <span style="font-weight:900; letter-spacing:1px;">STAR AIRWAYS</span>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px;">
+                    <div><label>Passenger</label><div id="passName" style="font-weight:bold;">TRAVELER</div></div>
+                    <div><label>Flight</label><div id="flightNo" class="ticket-flight-no">SA-402</div></div>
+                    <div><label>Gate</label><div style="font-weight:bold;">D22</div></div>
+                    <div><label>From</label><div id="depCity" style="font-weight:bold;">DFW</div></div>
+                    <div><label>To</label><div id="arrCity" style="font-weight:bold;">---</div></div>
+                    <div><label>Seat</label><div style="font-weight:bold; color:var(--star-gold)">1A</div></div>
+                </div>
+                <div style="margin-top: 30px; font-family: monospace; letter-spacing: 5px; color: #ccc;">|||| ||| || |||| ||| || ||||</div>
+                <div class="ticket-disclaimer">ENTERTAINMENT PURPOSES ONLY - NOT VALID FOR ACTUAL TRAVEL</div>
+            </div>
+            <div class="ticket-stub">
+                <svg style="width:40px; fill:white; margin: 0 auto 10px;" viewBox="0 0 100 100"><path d="M50 5 L61.2 38.8 L95 43.1 L69 64.9 L77.3 95 L50 78.8 L22.7 95 L31 64.9 L5 43.1 L38.8 38.8 Z" /></svg>
+                <div style="font-size: 0.7rem; opacity: 0.7;">BOARDING PASS</div>
+                <div id="stubFlight" style="font-weight: bold; margin: 5px 0;">SA-402</div>
+                <div style="font-size: 2.5rem; font-weight: 900; color: var(--star-gold);">1A</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="hero"></section>
+
+<div class="booking-container">
+    <div class="booking-card">
+        <div class="booking-tabs">
+            <div class="tab active">Book Flights</div>
+            <div class="tab">Flight Status</div>
+            <div class="tab">Manage Trips</div>
+            <div class="tab">Cargo</div>
+        </div>
+        <div class="booking-content">
+            <div class="booking-grid">
+                <div class="field">
+                    <label>From</label>
+                    <select id="originInput">
+                        <option value="DFW">DFW - Dallas/Ft. Worth (Main Hub)</option>
+                        <option value="SIN">SIN - Singapore Changi</option>
+                        <option value="JFK">JFK - New York City</option>
+                        <option value="SEA">SEA - Seattle Tacoma</option>
+                        <option value="BFI">BFI - Boeing Field (VIP)</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label>To</label>
+                    <input type="text" id="destInput" placeholder="Where to?">
+                </div>
+                <div class="field">
+                    <label>Date</label>
+                    <input type="date">
+                </div>
+                <div class="field">
+                    <label>Passenger (For Ticket)</label>
+                    <input type="text" id="nameInput" placeholder="Enter name">
+                </div>
+            </div>
+            <button class="btn-search" onclick="generateTicket()">Search Astra-7 Network</button>
+            <p style="text-align: center; margin-top: 15px; font-size: 0.7rem; color: #bbb; font-style: italic;">
+                This website is for entertainment purposes only. No actual travel can be booked.
+            </p>
+        </div>
+    </div>
+</div>
+
+<section class="promo-section">
+    <div class="promo-card">
+        <img src="https://images.unsplash.com/photo-1570710891163-6d3b5c47248b?auto=format&fit=crop&w=600&q=80" alt="Lounge">
+        <div class="promo-info">
+            <h3>The Flagship Lounge at DFW</h3>
+            <p>Experience the peak of luxury with 5-star Texas dining and private sleep suites in Terminal D.</p>
+        </div>
+    </div>
+    <div class="promo-card">
+        <img src="https://images.unsplash.com/photo-1530521954074-e64f6810b32d?auto=format&fit=crop&w=600&q=80" alt="Business Class">
+        <div class="promo-info">
+            <h3>Revolutionary Fleet</h3>
+            <p>Our Boeing Field (BFI) maintenance crew ensures every Astra-7 jet is flight-tested for ultimate safety.</p>
+        </div>
+    </div>
+</section>
+
+<section class="hub-discovery">
+    <div class="asset-box">
+        <svg class="star-logo-svg" viewBox="0 0 100 100">
+            <path d="M50 5 L61.2 38.8 L95 43.1 L69 64.9 L77.3 95 L50 78.8 L22.7 95 L31 64.9 L5 43.1 L38.8 38.8 Z" />
+        </svg>
+    </div>
+    <div style="flex: 1;">
+        <h2 style="font-size: 2.5rem; margin-bottom: 10px; color: var(--star-gold);">Smart Gateway Finder</h2>
+        <p style="font-size: 1.1rem; opacity: 0.8;">Locate the nearest Star Airways hub. Optimized for our JFK, SIN, DFW, SEA, and BFI network.</p>
+    </div>
+    <button class="btn-search" style="width: auto; margin: 0; padding: 15px 30px;" onclick="alert('Detecting location...')">Find Hub</button>
+</section>
+
+<footer>
+    <div class="footer-grid">
+        <div class="footer-col">
+            <h4>About Star Airways</h4>
+            <ul>
+                <li>The Astra-7 Fleet</li>
+                <li>Sustainable Aviation</li>
+                <li>Newsroom</li>
+                <li>Careers at DFW Hub</li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h4>Customer Support</h4>
+            <ul>
+                <li>Help Center</li>
+                <li>Baggage Policies</li>
+                <li>Accessibility Services</li>
+                <li>Contract of Carriage</li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h4>Corporate</h4>
+            <ul>
+                <li>Investor Relations</li>
+                <li>StarRewards Terms</li>
+                <li>Star Airways Cargo</li>
+                <li>Partnership Inquiries</li>
+            </ul>
+        </div>
+    </div>
+    <div class="legal-footer">
+        <div>© 2026 Star Airways Global Holdings. Member of the Star Elite Alliance.</div>
+        <div>Official Entertainment Simulation - No Real Bookings Provided.</div>
+    </div>
+</footer>
+
+<script>
+    function generateTicket() {
+        const name = document.getElementById('nameInput').value || "VALUED TRAVELER";
+        const dest = document.getElementById('destInput').value || "BEYOND";
+        const origin = document.getElementById('originInput').value;
+        const flightNum = "SA-" + Math.floor(Math.random() * 900 + 100);
+
+        // Map inputs to Ticket
+        document.getElementById('passName').innerText = name.toUpperCase();
+        document.getElementById('arrCity').innerText = dest.toUpperCase();
+        document.getElementById('depCity').innerText = origin;
+        document.getElementById('flightNo').innerText = flightNum;
+        document.getElementById('stubFlight').innerText = flightNum;
+
+        // Show Modal
+        document.getElementById('ticketModal').style.display = 'flex';
+    }
+
+    function closeTicket() {
+        document.getElementById('ticketModal').style.display = 'none';
+    }
+</script>
+
+</body>
+</html>
